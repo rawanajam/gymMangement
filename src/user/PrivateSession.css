@@ -1,0 +1,52 @@
+.private-session-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #faf3e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.session-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.session-item {
+  background-color: #ffffff;
+  margin: 10px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  transition: transform 0.2s;
+}
+
+.session-item:hover {
+  transform: scale(1.02);
+}
+
+.session-item.booked {
+  opacity: 0.6;
+}
+
+.book-button {
+  background-color: #50c878;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.book-button:hover {
+  background-color: #45b06e;
+}
+
+.booked-button {
+  background-color: #333333;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+}

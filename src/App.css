@@ -1,0 +1,25 @@
+/* App.css */
+/* App.css */
+body {
+  background-color: #f7f7f7;
+}
+
+.card {
+  border: none;
+  border-radius: 15px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+a.text-secondary:hover {
+  text-decoration: underline;
+}
+
+
