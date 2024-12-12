@@ -13,8 +13,8 @@ import ManagePublicClass from './admin/ManagePublicClass';
 
 function App() {
   
-  const role = localStorage.getItem('role'); // Get role from local storage
-  console.log("role: " + role);
+  //const role = localStorage.getItem('role'); // Get role from local storage
+  //console.log("role: " + role);
 
   return (
     <Router>
@@ -22,21 +22,14 @@ function App() {
         <Route path="/" element={<DesignBlock />} />
 
         {/* Protected Routes for Logged-in Users */}
-        <Route 
-  path="/login-result" 
-  element={
-    <ProtectedRoute 
-      element={role === 'admin' ? <AdminCardComponent /> : <UserCardComponent />} 
-    />
-  } 
-/>
+
 
         <Route path="/sign-up-result" element={<ProtectedRoute element={<UserCardComponent />} />} />
 
       
 
         {/* Conditional Routes based on Role */}
-        {role === 'admin' ? (
+       
           <>
             <Route path="/admin/*" element={<AdminCardComponent />} />
             <Route path="/admin/manage-public-classes" element={<ProtectedRoute element={<ManagePublicClass />} />} />
@@ -44,7 +37,7 @@ function App() {
             <Route path="/admin/manage-diet-plans" element={<ProtectedRoute element={<ManageDietPlan />} />} />
             <Route path="*" element={<Navigate to="/admin" />} />
           </>
-        ) : (
+        
           <>
             <Route path="/user/*" element={<UserCardComponent />} />   
             <Route path="/user/public-class" element={<PublicClass />} />
@@ -52,7 +45,7 @@ function App() {
             <Route path="/user/diet-plan" element={<DietClass />} /> 
             <Route path="*" element={<Navigate to="/user" />} />
           </>
-        )}
+        
       </Routes>
     </Router>
   );

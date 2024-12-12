@@ -42,10 +42,19 @@ function DesignBlock() {
           const decodedToken = jwtDecode(token);
           localStorage.setItem('role', decodedToken.role);
           
-          
+          const userRole = decodedToken.role;
 
-          // Navigate based on role
-          navigate('/login-result');
+        localStorage.setItem('role', userRole); // Store the role in localStorage
+        console.log("role: " + userRole);
+        // Navigate based on role
+        if (userRole === 'admin') {
+          navigate('/admin'); // Redirect to admin dashboard
+        } else if (userRole === 'postgres') {
+          navigate('/user'); // Redirect to user dashboard
+        } else {
+          setMessage('Invalid user role. Please contact support.');
+        }
+
       } else {
         // Handle Sign Up
         if (password !== confirmPassword) {
