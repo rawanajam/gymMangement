@@ -83,6 +83,13 @@ const ManagePrivateClass = () => {
                 <p className="card-text">Expertise: {classItem.expertise}</p>
                 <p className="card-text">Day: {classItem.sessionday}</p>
                 <p className="card-text">Time: {classItem.time}</p>
+                {classItem.book_by ? (
+                <p className="booked-by">
+                  <strong>Booked By:</strong> {classItem.book_by}
+                </p>
+              ) : (
+                <p className="booked-by">Not Booked Yet</p>
+              )}
                 <button className="btn btn-primary mr-2" onClick={() => editClass(index)}>Edit</button>
                 <button className="btn btn-primary mr-2" onClick={() => deleteClass(index)}>Delete</button>
               </div>

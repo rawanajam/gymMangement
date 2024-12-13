@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Pool } = require('pg'); // Import PostgreSQL connection pool
+const jwt = require('jsonwebtoken');
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -62,5 +63,34 @@ router.delete('/privateClasses/:id', async (req, res) => {
     res.status(500).json({ error: 'Error deleting class' });
   }
 });
+router.post('/bookSession', async (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1];
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const fullname = decoded.fullname; // Get the name from the token
+    const { id } = req.body; // ID of the session being booked
+
+    // Update the 'book_by' column in the sessions table
+    const result = await pool.query(
+      `UPDATE privatesessions SET book_by = $1 WHERE id = $2 RETURNING *`,
+      [fullname, id]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Session not found or already booked' });
+    }
+    res.json({
+      success: true,
+      message: 'Session booked successfully!',
+      data: result.rows[0], // Send the updated session data if needed
+    });
+    res.status(200).json({ message: 'Session booked successfully', session: result.rows[0] });
+  } catch (error) {
+    console.error('Error booking session:', error);
+    res.status(500).json({ error: 'Error booking session' });
+  }
+});
+
 
 module.exports = router;
