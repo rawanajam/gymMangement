@@ -10,7 +10,7 @@ const ManagePrivateClass = () => {
 
   // Fetch all classes when the component mounts
   useEffect(() => {
-    axios.get('http://localhost:5000/api/privateClasses') // Change URL to match your backend route
+    axios.get('http://localhost:5000/api/privateClassesAdmin') // Change URL to match your backend route
       .then(response => {
         setClasses(response.data); // Assuming the API returns a list of classes
       })
@@ -42,7 +42,7 @@ const ManagePrivateClass = () => {
         });
     } else {
       // If not editing, add a new class
-      axios.post('http://localhost:5000/api/publicClasses', newClass)
+      axios.post('http://localhost:5000/api/privateClasses', newClass)
         .then(response => {
           setClasses([...classes, { ...newClass, id: response.data.id }]);
           setNewClass({ coach: '', expertise: '',sessionday:'',time:''}); // Reset form
@@ -124,8 +124,8 @@ const ManagePrivateClass = () => {
         <div className="mb-3">
           <input
             type="text"
-            name="sessionDay"
-            value={newClass.sessionDay}
+            name="sessionday"
+            value={newClass.sessionday}
             onChange={handleInputChange}
             className="form-control"
             placeholder="Class Date"

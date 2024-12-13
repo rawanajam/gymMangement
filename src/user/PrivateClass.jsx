@@ -7,15 +7,25 @@ import './PrivateSession.css';
 
 const PrivateClass = () => {
   const [sessions, setSessions] = useState([]);
+  const fetchSessions = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/privateClassesUser');
+      setSessions(response.data);
+    } catch (error) {
+      console.error('Error fetching sessions:', error);
+    }
+  };
   useEffect(() => {
         // Fetch classes from the backend
-        axios.get('http://localhost:5000/api/privateClasses')
+        axios.get('http://localhost:5000/api/privateClassesUser')
           .then(response => {
             setSessions(response.data); // Set fetched data to state
+            
           })
           .catch(error => {
             console.error('Error fetching classes:', error);
           });
+          fetchSessions();
       }, []);
 
       const handleBookSession = async (id) => {
@@ -80,6 +90,7 @@ const PrivateClass = () => {
                       Book Now
                     </button>
                   )}
+                    
                 </li>
               ))
             )}

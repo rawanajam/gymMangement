@@ -11,7 +11,17 @@ const pool = new Pool({
 });
 
 // Fetch all classes
-router.get('/privateClasses', async (req, res) => {
+router.get('/privateClassesUser', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM privatesessions WHERE is_booked=false');
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error('Error fetching classes:', error);
+    res.status(500).json({ error: 'Error fetching classes' });
+  }
+});
+
+router.get('/privateClassesAdmin', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM privatesessions');
     res.status(200).json(result.rows);
@@ -20,14 +30,13 @@ router.get('/privateClasses', async (req, res) => {
     res.status(500).json({ error: 'Error fetching classes' });
   }
 });
-
 // Add a new class
 router.post('/privateClasses', async (req, res) => {
   const { coach,expertise,sessionday,time} = req.body;
   try {
     await pool.query(
       'INSERT INTO privatesessions (coach, expertise,sessionday,time) VALUES ($1, $2,$3,$4)',
-      [coach,expertise,sessionDay,time]
+      [coach,expertise,sessionday,time]
     );
     res.status(201).json({ message: 'Class added successfully' });
   } catch (error) {
@@ -73,7 +82,7 @@ router.post('/bookSession', async (req, res) => {
 
     // Update the 'book_by' column in the sessions table
     const result = await pool.query(
-      `UPDATE privatesessions SET book_by = $1 WHERE id = $2 RETURNING *`,
+      `UPDATE privatesessions SET book_by = $1 , is_booked = true WHERE id = $2 AND is_booked = false RETURNING *`,
       [fullname, id]
     );
 
@@ -85,7 +94,6 @@ router.post('/bookSession', async (req, res) => {
       message: 'Session booked successfully!',
       data: result.rows[0], // Send the updated session data if needed
     });
-    res.status(200).json({ message: 'Session booked successfully', session: result.rows[0] });
   } catch (error) {
     console.error('Error booking session:', error);
     res.status(500).json({ error: 'Error booking session' });
