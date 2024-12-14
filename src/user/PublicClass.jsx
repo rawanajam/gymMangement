@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../cardStyle.css';
+import {jwtDecode} from 'jwt-decode';
 import axios from 'axios';
 
 const PublicClass = () => {
@@ -17,6 +18,40 @@ const PublicClass = () => {
       });
   }, []);
 
+  const handleBookClass = async (id) => {
+    try {
+      // Decode user info from token
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('You must be logged in to book a session!');
+        return;
+      }
+      const decodedToken = jwtDecode(token);
+      const fullname = decodedToken.fullname;
+
+      // Make the booking API request
+       const response = await axios.post(
+        'http://localhost:5000/api/bookClass',
+        { fullname, id },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (response.data && response.data.success) {
+        alert('Class booked successfully!');
+        // Optionally, update the frontend state with the new class data
+        setClasses((prevClasses) =>
+          prevClasses.map((classItem) =>
+            classItem.id === id ? { ...classItem} : classItem
+          )
+        );
+      } else {
+        alert('Failed to book the class. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error booking class:', error);
+      alert('An error occurred. Please try again.');
+    }
+  };
+
   return (
     <div className="row">
       {classes.map((classItem, index) => (
@@ -25,7 +60,7 @@ const PublicClass = () => {
             <div className="card-body">
               <h5 className="card-title">{classItem.title}</h5>
               <p className="card-text">{classItem.description}</p>
-              <a href={classItem.link} className="btn btn-success">Book Now</a>
+              <button className="btn btn-success" onClick={() => handleBookClass(classItem.id)}>Book Now</button>
             </div>
           </div>
         </div>

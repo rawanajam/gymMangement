@@ -7,6 +7,8 @@ const ManagePublicClass = () => {
   const [classes, setClasses] = useState([]);
   const [newClass, setNewClass] = useState({ title: '', description: ''});
   const [editIndex, setEditIndex] = useState(null); // Track the index of the class being edited
+  const [bookedUsers, setBookedUsers] = useState([]); // State for booked users
+  const [showUsersModal, setShowUsersModal] = useState(false); 
 
   // Fetch all classes when the component mounts
   useEffect(() => {
@@ -69,6 +71,18 @@ const ManagePublicClass = () => {
       });
   };
 
+
+  const viewBookedUsers = (classId) => {
+    axios
+      .get(`http://localhost:5000/api/publicClasses/${classId}/bookedUsers`)
+      .then((response) => {
+        setBookedUsers(response.data);
+        setShowUsersModal(true); // Show modal with users
+      })
+      .catch((error) => {
+        console.error('Error fetching booked users:', error);
+      });
+  };
   return (
     <div>
       <h2>Manage Public Classes</h2>
@@ -83,6 +97,10 @@ const ManagePublicClass = () => {
                 <p className="card-text">{classItem.description}</p>
                 <button className="btn btn-primary mr-2" onClick={() => editClass(index)}>Edit</button>
                 <button className="btn btn-primary mr-2" onClick={() => deleteClass(index)}>Delete</button>
+                <button
+                  className="btn btn-primary mr-2"
+                  onClick={() => viewBookedUsers(classItem.id)}
+                >Booked</button>
               </div>
             </div>
           </div>
@@ -116,6 +134,36 @@ const ManagePublicClass = () => {
           {editIndex !== null ? 'Save Changes' : 'Add Class'}
         </button>
       </form>
+      {showUsersModal && (
+        <div className="modal" style={{ display: 'block', background: 'rgba(0,0,0,0.5)' }}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Booked Users</h5>
+                <button className="close" onClick={() => setShowUsersModal(false)}>
+                  &times;
+                </button>
+              </div>
+              <div className="modal-body">
+                {bookedUsers.length === 0 ? (
+                  <p>No users have booked this class.</p>
+                ) : (
+                  <ul>
+                    {bookedUsers.map((user, idx) => (
+                      <li key={idx}>{user}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <div className="modal-footer">
+                <button className="btn btn-secondary" onClick={() => setShowUsersModal(false)}>
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
