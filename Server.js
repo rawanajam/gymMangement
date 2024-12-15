@@ -94,12 +94,13 @@ app.post('/api/diet-plan', async (req, res) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const fullname = decoded.fullname;
+    const email=decoded.email;
     const { age, weight, height, activityLevel, goals, dietaryRestrictions } = req.body;
 
     const result = await pool.query(
-      `INSERT INTO diet_requests (fullname, age, weight, height, activity_level, goals, dietary_restrictions)
+      `INSERT INTO diet_requests (fullname, email, age, weight, height, activity_level, goals, dietary_restrictions)
       VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
-      [fullname, age, weight, height, activityLevel, goals, dietaryRestrictions]
+      [fullname,email, age, weight, height, activityLevel, goals, dietaryRestrictions]
     );
 
     res.status(201).json({ message: 'Diet plan request submitted successfully', data: result.rows[0] });
@@ -139,6 +140,8 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASSWORD, // Your email password
   },
 });
+console.log(process.env.EMAIL, process.env.EMAIL_PASSWORD);
+
 
 // API to send diet plan email
 app.post('/api/admin/send-diet-plan', async (req, res) => {
