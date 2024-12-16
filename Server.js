@@ -3,9 +3,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { Pool } = require('pg'); // Importing Pool from 'pg'
 const cors = require('cors');
-const nodemailer = require('nodemailer');
 require('dotenv').config();
-
+const mailjet = require('node-mailjet');
 
 
 const app = express();
@@ -29,6 +28,11 @@ const pool = new Pool({
   password: process.env.DB_PASS,
   port: process.env.DB_PORT,
 });
+
+const client = mailjet.apiConnect(
+  process.env.MAILJET_API_KEY,
+  process.env.MAILJET_SECRET_KEY
+);
 
 app.get('/api/users', async (req, res) => {
   try {
@@ -99,7 +103,7 @@ app.post('/api/diet-plan', async (req, res) => {
 
     const result = await pool.query(
       `INSERT INTO diet_requests (fullname, email, age, weight, height, activity_level, goals, dietary_restrictions)
-      VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+      VALUES ($1, $2, $3, $4, $5, $6, $7,$8) RETURNING *`,
       [fullname,email, age, weight, height, activityLevel, goals, dietaryRestrictions]
     );
 
@@ -132,41 +136,75 @@ app.get('/api/admin/diet-plans', async (req, res) => {
   }
 });
 
-// Email transporter setup
-const transporter = nodemailer.createTransport({
-  service: 'Gmail', // Or use another email service provider
-  auth: {
-    user: process.env.EMAIL, // Your email
-    pass: process.env.EMAIL_PASSWORD, // Your email password
-  },
+
+app.post('/api/admin/write-diet-plan', async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const email = decoded.email;
+    const { dietPlan } = req.body;
+
+    // Ensure dietPlan is passed correctly from the request body
+    if (!dietPlan) {
+      return res.status(400).json({ error: 'Diet plan content is required' });
+    }
+
+    const result = await pool.query(
+      `UPDATE diet_requests SET diet_plan=$1 WHERE email=$2 RETURNING *`, // You can return the updated row if needed
+      [dietPlan, email]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'No diet plan found for this email' });
+    }
+
+    res.status(200).json({ message: 'Diet plan updated successfully', data: result.rows[0] });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Error updating diet plan' });
+  }
 });
-console.log(process.env.EMAIL, process.env.EMAIL_PASSWORD);
+
 
 
 // API to send diet plan email
-app.post('/api/admin/send-diet-plan', async (req, res) => {
+app.put('/api/admin/send-diet-plan', async (req, res) => {
   try {
-    const { email, dietPlan } = req.body;
+    const { email,fullname, dietPlan } = req.body;
 
     // Define email content
-    const mailOptions = {
-      from: process.env.EMAIL,
-      to: email,
-      subject: 'Your Personalized Diet Plan',
-      html: `
-        <h1>Your Diet Plan</h1>
-        <p>Here is your personalized diet plan:</p>
-        <pre>${dietPlan}</pre>
-      `,
-    };
+    const request = await client.post('send', { version: 'v3.1' }).request({
+      Messages: [
+        {
+          From: {
+            Email: 'rawane.ajam2003@gmail.com', // Your Mailjet sender email
+            Name: 'gym mangement website',
+          },
+          To: [
+            {
+              Email: email,
+              Name: fullname,
+            },
+          ],
+          Subject: 'Your Personalized Diet Plan',
+          HTMLPart: `
+            <h1>Your Diet Plan</h1>
+            <p>Here is your personalized diet plan:</p>
+            <pre>${dietPlan}</pre>
+          `,
+        },
+      ],
+    });
 
-    // Send email
-    await transporter.sendMail(mailOptions);
-
+    const response = await request;
     res.status(200).json({ message: 'Diet plan sent successfully!' });
   } catch (error) {
-    console.error('Error sending email:', error);
-    res.status(500).json({ error: 'Error sending diet plan email' });
+    console.error('Error sending email:', error.message);
+    res.status(500).json({ error: 'Error sending email' });
   }
 });
 

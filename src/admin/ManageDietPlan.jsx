@@ -4,7 +4,7 @@ import axios from 'axios';
 function ManageDietPlan() {
   const [dietPlans, setDietPlans] = useState([]);
   const [error, setError] = useState('');
-  const [editedMeal, setEditedMeal] = useState(''); // For editing meals
+  const [dietPlan, setDietPlan] = useState(''); // For editing meals
   const [selectedPlan, setSelectedPlan] = useState(null); // Selected diet plan for editing
 
   useEffect(() => {
@@ -25,12 +25,12 @@ function ManageDietPlan() {
     fetchDietPlans();
   }, []);
 
-  const sendDietPlan = async (email, dietPlan) => {
+  const sendDietPlan = async (email,fullname, dietPlan) => {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
         'http://localhost:5000/api/admin/send-diet-plan',
-        { email, dietPlan },
+        { email,fullname, dietPlan },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -52,7 +52,7 @@ function ManageDietPlan() {
     if (!confirmation) return;
 
     // Generate and send the diet plan
-    const updatedPlan = editedMeal || generateDietPlan(plan); // Use edited meals if any
+    const updatedPlan = dietPlan || generateDietPlan(plan); // Use edited meals if any
     sendDietPlan(plan.email, updatedPlan);
   };
 
@@ -69,7 +69,7 @@ function ManageDietPlan() {
     - Goals: ${plan.goals}
 
     Meals:
-    ${editedMeal || "Default meal plan content here."}
+    ${dietPlan || "Default meal plan content here."}
 
     Stay hydrated and active!
 
@@ -80,12 +80,41 @@ function ManageDietPlan() {
 
   const handleEditMeal = (plan) => {
     setSelectedPlan(plan); // Set the current plan for editing
-    setEditedMeal(''); // Clear previous meal edits
+    setDietPlan(plan.dietPlan||''); // Clear previous meal edits
   };
 
-  const saveEditedMeal = () => {
-    setSelectedPlan(null); // Close the editing mode
+  const saveEditedMeal = async (dietPlan) => {
+    try {
+      const email = selectedPlan.email; // Extract email from selectedPlan
+      const token = localStorage.getItem('token');
+      console.log('Selected plan:', selectedPlan);
+console.log('Email:', selectedPlan?.email);
+
+      // Send only the required data
+      const updatedDietPlan = dietPlan;
+      console.log('diet plan',updatedDietPlan);
+      await axios.put(
+        'http://localhost:5000/api/admin/write-diet-plan',
+        { email, dietPlan: updatedDietPlan}, // Pass email and dietPlan as the data
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      alert('Diet plan saved successfully!');
+      setSelectedPlan(null); // Close editing mode
+      setDietPlans((prevPlans) =>
+        prevPlans.map((plan) =>
+          plan.email === selectedPlan.email ? { ...plan, diet_plan: dietPlan } : plan
+        )
+      );
+    } catch (error) {
+      console.error('Error saving diet plan:', error);
+      alert('Failed to save the diet plan. Please try again.');
+    }
   };
+  
 
   return (
     <div className="container mt-5">
@@ -122,7 +151,7 @@ function ManageDietPlan() {
                 <td>{plan.dietary_restrictions}</td>
                 <td>
                   <button
-                    className="btn btn-secondary me-2"
+                    className="btn btn-primary"
                     onClick={() => handleEditMeal(plan)}
                   >
                     Edit Meal
@@ -145,13 +174,14 @@ function ManageDietPlan() {
           <textarea
             className="form-control mb-3"
             rows="5"
-            value={editedMeal}
-            onChange={(e) => setEditedMeal(e.target.value)}
+            value={dietPlan}
+            onChange={(e) => setDietPlan(e.target.value)}
             placeholder="Enter meal details here..."
           ></textarea>
-          <button className="btn btn-success" onClick={saveEditedMeal}>
-            Save
-          </button>
+          <button className="btn btn-success" onClick={() => saveEditedMeal(dietPlan)}>
+               Save
+            </button>
+
         </div>
       )}
     </div>

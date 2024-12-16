@@ -20,7 +20,7 @@ const DietClass = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token'); // Get the token from localStorage
-    if (!token) {
+     if (!token) {
       alert('You need to log in to submit your diet plan.');
       return;
     }
