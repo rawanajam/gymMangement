@@ -53,7 +53,8 @@ function ManageDietPlan() {
 
     // Generate and send the diet plan
     const updatedPlan = dietPlan || generateDietPlan(plan); // Use edited meals if any
-    sendDietPlan(plan.email, updatedPlan);
+    sendDietPlan(plan.email, plan.fullname,updatedPlan);
+
   };
 
   const generateDietPlan = (plan) => {
@@ -85,17 +86,17 @@ function ManageDietPlan() {
 
   const saveEditedMeal = async (dietPlan) => {
     try {
-      const email = selectedPlan.email; // Extract email from selectedPlan
+      const fullname = selectedPlan.fullname; // Extract email from selectedPlan
       const token = localStorage.getItem('token');
       console.log('Selected plan:', selectedPlan);
-console.log('Email:', selectedPlan?.email);
+console.log('fullname:', selectedPlan?.fullname);
 
       // Send only the required data
       const updatedDietPlan = dietPlan;
-      console.log('diet plan',updatedDietPlan);
+      console.log('diet plan: ',updatedDietPlan);
       await axios.put(
         'http://localhost:5000/api/admin/write-diet-plan',
-        { email, dietPlan: updatedDietPlan}, // Pass email and dietPlan as the data
+        { fullname,dietPlan: updatedDietPlan}, // Pass email and dietPlan as the data
         {
           headers: {
             Authorization: `Bearer ${token}`,

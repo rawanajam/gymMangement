@@ -52,7 +52,7 @@ router.put('/privateClasses/:id', async (req, res) => {
   try {
     await pool.query(
       'UPDATE privatesessions SET coach = $1, expertise = $2, sessionday=$3 ,time=$4 WHERE id = $5',
-      [coach, expertise,sessionDay,time, id]
+      [coach, expertise,sessionday,time, id]
     );
     res.json({ message: 'Class updated successfully' });
   } catch (error) {

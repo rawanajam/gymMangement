@@ -137,7 +137,7 @@ app.get('/api/admin/diet-plans', async (req, res) => {
 });
 
 
-app.post('/api/admin/write-diet-plan', async (req, res) => {
+app.put('/api/admin/write-diet-plan', async (req, res) => {
   try {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
@@ -145,17 +145,18 @@ app.post('/api/admin/write-diet-plan', async (req, res) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const email = decoded.email;
+    //const fullname = decoded.fullname
+    const {fullname}=req.body;
     const { dietPlan } = req.body;
 
-    // Ensure dietPlan is passed correctly from the request body
+    // Ensure dietPlan is passed correctly from the request body++
     if (!dietPlan) {
       return res.status(400).json({ error: 'Diet plan content is required' });
     }
 
     const result = await pool.query(
-      `UPDATE diet_requests SET diet_plan=$1 WHERE email=$2 RETURNING *`, // You can return the updated row if needed
-      [dietPlan, email]
+      `UPDATE diet_requests SET diet_plan=$1 WHERE fullname=$2 RETURNING *`, // You can return the updated row if needed
+      [dietPlan, fullname]
     );
 
     if (result.rowCount === 0) {
@@ -172,7 +173,7 @@ app.post('/api/admin/write-diet-plan', async (req, res) => {
 
 
 // API to send diet plan email
-app.put('/api/admin/send-diet-plan', async (req, res) => {
+app.post('/api/admin/send-diet-plan', async (req, res) => {
   try {
     const { email,fullname, dietPlan } = req.body;
 
