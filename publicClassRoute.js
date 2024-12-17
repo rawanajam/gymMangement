@@ -10,6 +10,8 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
+const cron = require('node-cron');
+
 // Fetch all classes
 router.get('/publicClasses', async (req, res) => {
   try {
@@ -70,14 +72,19 @@ router.post('/bookClass', async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const fullname = decoded.fullname; // Get the name from the token
     const { id } = req.body; // ID of the session being booked
+    const booking = {
+      name: fullname,
+      date: new Date().toISOString() // Store the booking date in ISO format
+    };
 
     // Update the 'book_by' column in the sessions table
     const result = await pool.query(
       `UPDATE publicclasses
-       SET book_by =array_append(book_by, $1)
+       SET book_by = book_by || $1::jsonb
        WHERE id = $2
        RETURNING *`,
-      [fullname, id]
+      [JSON.stringify(booking)
+        , id]
     );
     
 
@@ -107,6 +114,43 @@ router.get('/publicClasses/:id/bookedUsers', async (req, res) => {
     res.status(500).json({ error: 'Error fetching booked users' });
   }
 });
+// Cleanup route to remove bookings older than 30 days
+router.delete('/publicClasses/cleanup', async (req, res) => {
+  try {
+    // Query to clean up old bookings
+    const result = await pool.query(`
+      UPDATE publicclasses
+      SET book_by = (
+        SELECT jsonb_agg(e)
+        FROM jsonb_array_elements(book_by) e
+        WHERE (e->>'date')::timestamp >= NOW() - INTERVAL '30 days'
+      )
+      WHERE book_by IS NOT NULL
+      RETURNING *;
+    `);
+
+    res.json({
+      success: true,
+      message: 'Old bookings removed successfully!',
+      updatedClasses: result.rows, // Return updated classes if needed
+    });
+  } catch (error) {
+    console.error('Error cleaning up old bookings:', error);
+    res.status(500).json({ error: 'Error cleaning up old bookings' });
+  }
+});
+
+// Schedule the cleanup to run daily at midnight
+cron.schedule('0 0 * * *', async () => {
+  try {
+    const response = await axios.delete('http://localhost:5000/api/publicClasses/cleanup');
+    console.log('Cleanup result:', response.data.message);
+  } catch (error) {
+    console.error('Error running cleanup job:', error);
+  }
+});
+
+
 
 
 module.exports = router;

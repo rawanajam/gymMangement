@@ -150,7 +150,7 @@ const ManagePublicClass = () => {
                 ) : (
                   <ul>
                     {bookedUsers.map((user, idx) => (
-                      <li key={idx}>{user}</li>
+                      <li key={idx}><strong>{user.name}</strong> - {new Date(user.date).toLocaleDateString()} at {new Date(user.date).toLocaleTimeString()}</li>
                     ))}
                   </ul>
                 )}
