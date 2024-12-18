@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import DesignBlock from './DesignBlock';
+import IntroPage from './IntroPage';
 import UserCardComponent from './user/UserCardComponent';
 import ProtectedRoute from './ProtectedRoute';
 import PublicClass from './user/PublicClass';
@@ -19,7 +20,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<DesignBlock />} />
+        <Route path="/" element={<IntroPage />} />
+        <Route path="/design-block" element={<DesignBlock />} />
 
         {/* Protected Routes for Logged-in Users */}
 

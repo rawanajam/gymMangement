@@ -75,8 +75,8 @@ function DesignBlock() {
   };
 
   return (
-    <div className="App">
-      <div className="container d-flex justify-content-center align-items-center min-vh-100">
+    <div className="App" >
+      <div className="container d-flex justify-content-center align-items-center min-vh-100" >
         <div className="card shadow-lg p-3 mb-5 bg-white rounded" style={{ width: '400px' }}>
           <div className="card-body">
             <h2 className="text-center mb-4">{isLogin ? 'Login' : 'Sign Up'}</h2>

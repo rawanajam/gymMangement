@@ -2,7 +2,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #F9F4E9; /* Warm White */
+    background-color:#1952ba; /* Warm White */
     color: #333333; /* Charcoal Gray for text */
     display: flex;
     justify-content: center;
@@ -39,7 +39,7 @@ body {
   
   .card-title {
     font-size: 1.5rem;
-    color: #D57E5D; /* Muted Terracotta */
+    color: #333333; /* Muted Terracotta */
     font-weight: bold;
     margin-bottom: 15px;
   }
@@ -51,7 +51,7 @@ body {
   }
   
   .btn-primary {
-    background-color: #D57E5D; /* Muted Terracotta */
+    background-color:#1952ba; /* Muted Terracotta */
     border: none;
     border-radius: 20px;
     padding: 10px 20px;

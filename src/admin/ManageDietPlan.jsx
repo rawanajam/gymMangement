@@ -123,19 +123,19 @@ console.log('fullname:', selectedPlan?.fullname);
       {error && <div className="alert alert-danger">{error}</div>}
       {!error && dietPlans.length === 0 && <p>No diet plans found.</p>}
       {dietPlans.length > 0 && (
-        <table className="table table-striped">
+        <table className="table">
           <thead>
             <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>email</th>
-              <th>Age</th>
-              <th>Weight</th>
-              <th>Height</th>
-              <th>Activity Level</th>
-              <th>Goals</th>
-              <th>Dietary Restrictions</th>
-              <th>Actions</th>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">email</th>
+              <th scope="col">Age</th>
+              <th scope="col">Weight</th>
+              <th scope="col">Height</th>
+              <th scope="col">Activity Level</th>
+              <th scope="col">Goals</th>
+              <th scope="col">Dietary Restrictions</th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
