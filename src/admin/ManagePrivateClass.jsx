@@ -71,10 +71,14 @@ const ManagePrivateClass = () => {
 
   return (
     <div>
-      <h2>Manage Private Classes</h2>
+      <nav className="navbar navbar-light fixed-top">
+        <div className="container-fluid">
+          <span className="navbar-brand mb-0 h1">Manage Private Classes</span>
+        </div>
+      </nav>
 
       {/* Class List */}
-      <div className="row">
+      <div className="card-container">
         {classes.map((classItem, index) => (
           <div className="col-sm-4" key={index}>
             <div className="card">
@@ -85,7 +89,7 @@ const ManagePrivateClass = () => {
                 <p className="card-text">Time: {classItem.time}</p>
                 {classItem.book_by ? (
                 <p className="booked-by">
-                  <strong>Booked By:</strong> {classItem.book_by}
+                  Booked By: {classItem.book_by}
                 </p>
               ) : (
                 <p className="booked-by">Not Booked Yet</p>
@@ -99,6 +103,7 @@ const ManagePrivateClass = () => {
       </div>
 
       {/* Add/Edit Class Form */}
+      <div className="form-container">
       <h3>{editIndex !== null ? 'Edit Class' : 'Add New Class'}</h3>
       <form className="mb-4">
         <div className="mb-3">
@@ -145,6 +150,7 @@ const ManagePrivateClass = () => {
           {editIndex !== null ? 'Save Changes' : 'Add Class'}
         </button>
       </form>
+      </div>
     </div>
   );
 };

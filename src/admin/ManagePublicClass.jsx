@@ -85,10 +85,13 @@ const ManagePublicClass = () => {
   };
   return (
     <div>
-      <h2>Manage Public Classes</h2>
-
+      <nav className="navbar navbar-light fixed-top">
+        <div className="container-fluid">
+          <span className="navbar-brand mb-0 h1">Manage Public Classes</span>
+        </div>
+      </nav>
       {/* Class List */}
-      <div className="row">
+      <div className="card-container">
         {classes.map((classItem, index) => (
           <div className="col-sm-4" key={index}>
             <div className="card">
@@ -108,6 +111,7 @@ const ManagePublicClass = () => {
       </div>
 
       {/* Add/Edit Class Form */}
+      <div className="form-container">
       <h3>{editIndex !== null ? 'Edit Class' : 'Add New Class'}</h3>
       <form className="mb-4">
         <div className="mb-3">
@@ -134,6 +138,7 @@ const ManagePublicClass = () => {
           {editIndex !== null ? 'Save Changes' : 'Add Class'}
         </button>
       </form>
+      </div>
       {showUsersModal && (
         <div className="modal" style={{ display: 'block', background: 'rgba(0,0,0,0.5)' }}>
           <div className="modal-dialog">

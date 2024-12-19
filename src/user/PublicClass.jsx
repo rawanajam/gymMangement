@@ -53,14 +53,19 @@ const PublicClass = () => {
   };
 
   return (
-    <div className="row">
+    <div className="card-container">
+      <nav className="navbar navbar-light fixed-top">
+            <div className="container-fluid">
+              <span className="navbar-brand mb-0 h1">Available Public Classes</span>
+            </div>
+           </nav>
       {classes.map((classItem, index) => (
         <div className="col-sm-4" key={index}>
           <div className="card">
             <div className="card-body">
               <h5 className="card-title">{classItem.title}</h5>
               <p className="card-text">{classItem.description}</p>
-              <button className="btn btn-success" onClick={() => handleBookClass(classItem.id)}>Book Now</button>
+              <button className="btn btn-primary" onClick={() => handleBookClass(classItem.id)}>Book Now</button>
             </div>
           </div>
         </div>

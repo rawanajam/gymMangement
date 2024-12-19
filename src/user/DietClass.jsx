@@ -58,105 +58,91 @@ const DietClass = () => {
   
 
   return (
-    <form onSubmit={handleSubmit} style={styles.form}>
-      <h2 style={styles.title}>Request Your Diet Plan</h2>
-      <input
-        type="number"
-        name="age"
-        placeholder="Age"
-        value={formData.age}
-        onChange={handleChange}
-        style={styles.input}
-        required
-      />
-      <input
-        type="number"
-        name="weight"
-        placeholder="Weight (kg)"
-        value={formData.weight}
-        onChange={handleChange}
-        style={styles.input}
-        required
-      />
-      <input
-        type="number"
-        name="height"
-        placeholder="Height (cm)"
-        value={formData.height}
-        onChange={handleChange}
-        style={styles.input}
-        required
-      />
-      <select
-        name="activityLevel"
-        value={formData.activityLevel}
-        onChange={handleChange}
-        style={styles.input}
-        required
-      >
-        <option value="">Activity Level</option>
-        <option value="low">Low</option>
-        <option value="moderate">Moderate</option>
-        <option value="high">High</option>
-      </select>
-      <textarea
-        name="goals"
-        placeholder="Your Goals (e.g., weight loss, muscle gain)"
-        value={formData.goals}
-        onChange={handleChange}
-        style={styles.textarea}
-        required
-      />
-      <textarea
-        name="dietaryRestrictions"
-        placeholder="Any Dietary Restrictions?"
-        value={formData.dietaryRestrictions}
-        onChange={handleChange}
-        style={styles.textarea}
-      />
-      <button type="submit" style={styles.button}>Submit</button>
-    </form>
-  );
-};
-
-const styles = {
-  form: {
-    maxWidth: "500px",
-    margin: "0 auto",
-    padding: "20px",
-    border: "1px solid #333333",
-    borderRadius: "8px",
-    backgroundColor: "#FAF3E0",
-  },
-  title: {
-    textAlign: "center",
-    marginBottom: "15px",
-  },
-  input: {
-    width: "100%",
-    padding: "10px",
-    margin: "10px 0",
-    borderRadius: "5px",
-    border: "1px solid #333333",
-  },
-  textarea: {
-    width: "100%",
-    height: "80px",
-    padding: "10px",
-    margin: "10px 0",
-    borderRadius: "5px",
-    border: "1px solid #333333",
-  },
-  button: {
-    width: "100%",
-    padding: "10px",
-    backgroundColor: "#50C878",
-    color: "#FAF3E0",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-  },
-};
-
+    <div>
+      <nav className="navbar navbar-light fixed-top">
+            <div className="container-fluid">
+              <span className="navbar-brand mb-0 h1">Request Your Diet Plan</span>
+            </div>
+           </nav>
+      <div className="card-container">
+        <div className="card" style={{ width: '100%' }}>
+          <div className="card-body">
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <input
+                  type="number"
+                  name="age"
+                  placeholder="Age"
+                  value={formData.age}
+                  onChange={handleChange}
+                  className="form-control"
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <input
+                  type="number"
+                  name="weight"
+                  placeholder="Weight (kg)"
+                  value={formData.weight}
+                  onChange={handleChange}
+                  className="form-control"
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <input
+                  type="number"
+                  name="height"
+                  placeholder="Height (cm)"
+                  value={formData.height}
+                  onChange={handleChange}
+                  className="form-control"
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <select
+                  name="activityLevel"
+                  value={formData.activityLevel}
+                  onChange={handleChange}
+                  className="form-control"
+                  required
+                >
+                  <option value="">Activity Level</option>
+                  <option value="low">Low</option>
+                  <option value="moderate">Moderate</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+              <div className="mb-3">
+                <textarea
+                  name="goals"
+                  placeholder="Your Goals (e.g., weight loss, muscle gain)"
+                  value={formData.goals}
+                  onChange={handleChange}
+                  className="form-control"
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <textarea
+                  name="dietaryRestrictions"
+                  placeholder="Any Dietary Restrictions?"
+                  value={formData.dietaryRestrictions}
+                  onChange={handleChange}
+                  className="form-control"
+                />
+              </div>
+              <button type="submit" className="btn btn-primary w-100">
+                Submit
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      </div>
+    );
+  };
 export default DietClass;
 

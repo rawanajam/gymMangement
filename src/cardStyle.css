@@ -2,15 +2,31 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color:#1952ba; /* Warm White */
+    background-color:#F9F4E9; /* Warm White */
     color: #333333; /* Charcoal Gray for text */
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
+    padding: 0;
+    padding-top:70px ;
   }
-  
+  .navbar {
+    height: 60px;
+    position: fixed; /* Ensure the navbar stays at the top */
+    width: 100%;
+    z-index: 1000;
+    background-color: #1952ba;
+ 
+    margin-bottom: 15px;
+
+  }
+  .h1{
+    font-size: 1.5rem;
+    color: white; /* Muted Terracotta */
+    font-weight: bold;
+  }
   .row {
     max-width: 80%;
     display: flex;
@@ -18,7 +34,27 @@ body {
     gap: 20px;
   }
   
+  .card-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow cards to wrap to the next row */
+    gap: 20px; /* Space between cards */
+    justify-content: center; /* Center the cards */
+    width: 100%; /* Adjust width of the container */
+    min-width: 900px;
+    max-width: 1200px; /* Optional: limit max-width */
+  }
+
   .card {
+   box-sizing: border-box;
+    border: none;
+    border-radius: 10px;
+    background-color: #FFFFFF; /* White for cards */
+    color: #333333; /* Charcoal Gray for text */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .card-login {
     border: none;
     border-radius: 10px;
     background-color: #FFFFFF; /* White for cards */
@@ -66,7 +102,21 @@ body {
   }
   
   
-  
+  /* style.css */
+.form-container {
+  width: 400px; /* Fixed width for the form */
+  margin: 20px auto; /* Center the form horizontally */
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 20px;
+  padding-bottom: 3px;
+  background-color: #f9f9f9; /* Light background for contrast */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional styling */
+}
+.table-diet{
+  padding-bottom: 200px;
+ }
   
   
   

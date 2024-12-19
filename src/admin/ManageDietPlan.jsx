@@ -119,10 +119,15 @@ console.log('fullname:', selectedPlan?.fullname);
 
   return (
     <div className="container mt-5">
-      <h1 className="mb-4">Diet Plan Requests</h1>
+      <nav className="navbar navbar-light fixed-top">
+        <div className="container-fluid">
+          <span className="navbar-brand mb-0 h1">Diet Plan Requests</span>
+        </div>
+      </nav>
       {error && <div className="alert alert-danger">{error}</div>}
       {!error && dietPlans.length === 0 && <p>No diet plans found.</p>}
       {dietPlans.length > 0 && (
+        <div className="table-diet">
         <table className="table">
           <thead>
             <tr>
@@ -168,6 +173,7 @@ console.log('fullname:', selectedPlan?.fullname);
             ))}
           </tbody>
         </table>
+        </div>
       )}
       {selectedPlan && (
         <div className="mt-4">
