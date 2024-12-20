@@ -4,7 +4,7 @@ import '../cardStyle.css';
 
 const AdminCardComponent = () => {
   return (
-    <div className="row">
+    <div className="card-container">
       {/* Manage Public Classes Card */}
       <div className="col-sm-4">
         <div className="card">

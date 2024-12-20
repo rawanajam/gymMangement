@@ -49,11 +49,24 @@ app.post('/api/register', async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const result = await pool.query(
+    const newUser = await pool.query(
       'INSERT INTO users(email, fullname ,password) VALUES($1, $2, $3) RETURNING *',
       [email, fullname, hashedPassword]
     );
-    res.status(201).json(result.rows[0]);
+    const token = jwt.sign(
+      {
+        id: newUser.rows[0].id,
+        email: newUser.rows[0].email,
+        fullname: newUser.rows[0].fullname,
+      },
+      process.env.JWT_SECRET, // Add your secret key here
+      { expiresIn: '1h' } // Optional: Set token expiration
+    );
+
+    // Send response
+    res.status(201).json({
+      token, // Return the token
+    });
   } catch (error) {
     console.error('Register Error:', error); // Log the error
     res.status(500).json({ error: 'Error registering user' });

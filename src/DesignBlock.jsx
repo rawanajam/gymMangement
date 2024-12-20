@@ -61,11 +61,15 @@ function DesignBlock() {
           setMessage('Passwords do not match.');
           return;
         }
-        await axios.post('http://localhost:5000/api/register', {
+        const response = await axios.post('http://localhost:5000/api/register', {
           email,
           fullname,
           password,
         });
+        const token = response.data.token;
+    if (token) {
+      localStorage.setItem('token', token); // Store the new token if sent
+    }
         setMessage('Registration successful!');
         navigate('/sign-up-result');
       }
