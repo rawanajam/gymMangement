@@ -1,6 +1,8 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../cardStyle.css';
+import publicClassImage from './publicClass.webp';
+import privatClassImage from './privateClass.webp';
 
 const CardComponent = () => {
   return (
@@ -9,6 +11,7 @@ const CardComponent = () => {
       <div className="col-sm-4">
         <div className="card">
           <div className="card-body">
+          <img src={publicClassImage} alt="public class" className='imgCard'/>
             <h5 className="card-title">Take a Public Class</h5>
             <p className="card-text">
               Join group sessions led by professional trainers. Perfect for those who enjoy a motivating, social workout atmosphere.
@@ -24,6 +27,7 @@ const CardComponent = () => {
       <div className="col-sm-4">
         <div className="card">
           <div className="card-body">
+            <img src={privatClassImage} alt="private class" className='imgCard'/>
             <h5 className="card-title">Book a Private Class</h5>
             <p className="card-text">
               Get personalized coaching tailored to your goals. Perfect for focused, one-on-one training sessions.
