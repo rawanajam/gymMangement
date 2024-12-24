@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../cardStyle.css';
 import publicClassImage from './publicClass.webp';
 import privatClassImage from './privateClass.webp';
+import dietPlanImage from './dietPlan.jpeg';
 
 const CardComponent = () => {
   return (
@@ -43,6 +44,7 @@ const CardComponent = () => {
       <div className="col-sm-4">
         <div className="card">
           <div className="card-body">
+          <img src={dietPlanImage} alt="diet plan" className='imgCard'/>
             <h5 className="card-title">Get a Diet Plan</h5>
             <p className="card-text">
               Receive a customized nutrition plan to complement your workouts and help you achieve your fitness goals.

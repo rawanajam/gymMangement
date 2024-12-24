@@ -41,7 +41,7 @@ body {
     gap: 10px; /* Space between cards */
     justify-content: center; /* Center the cards */
     width: 100%; /* Adjust width of the container */
-    min-width: 900px;
+    min-width: 800px;
     max-width: 1200px; /* Optional: limit max-width */
   }
 
@@ -53,6 +53,7 @@ body {
     color: #333333; /* Charcoal Gray for text */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    margin-top: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   .card-login {
