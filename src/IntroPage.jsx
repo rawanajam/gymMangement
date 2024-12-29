@@ -2,6 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 import './IntroPageStyle.css';
+import introPageImage from './introPage2.webp';
 
 const IntroPage = () => {
 
@@ -12,8 +13,8 @@ const IntroPage = () => {
   };
 
   return (
-    <div className="introPage col-xxl-15 px-30 py-20">
-      <div className="row flex-lg-row-reverse align-items-center g-0 py-0">
+    <div className="introPage">
+      <div>
         <div className="col-lg-10 move-text">
           <h1 className="display-5 fw-bold text-body-emphasis lh-1 mb-3">
           Elevate Your Fitness Journey with Our Gym Management Platform
@@ -28,6 +29,13 @@ const IntroPage = () => {
           </div>
         </div>
      </div>
+     <div className="col-md-6">
+          <img 
+            src={introPageImage} // Replace with your image URL
+            alt="Fitness Journey"
+            className="img-fluid rounded"
+          />
+        </div>
     </div>
   );
 };

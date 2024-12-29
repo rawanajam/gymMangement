@@ -64,7 +64,7 @@ const DietClass = () => {
               <span className="navbar-brand mb-0 h1">Request Your Diet Plan</span>
             </div>
            </nav>
-      <div className="card-container">
+      <div className="form-container">
         <div className="card" style={{ width: '100%' }}>
           <div className="card-body">
             <form onSubmit={handleSubmit}>

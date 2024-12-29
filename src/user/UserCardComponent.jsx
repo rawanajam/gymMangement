@@ -7,7 +7,7 @@ import dietPlanImage from './dietPlan.jpeg';
 
 const CardComponent = () => {
   return (
-    <div className="row">
+    <div className="card-container">
       {/* Public Class Card */}
       <div className="col-sm-4">
         <div className="card">

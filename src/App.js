@@ -43,15 +43,13 @@ function App() {
       
 
         {/* Conditional Routes based on Role */}
-          {role === 'admin' && (
           <>
             <Route path="/admin" element={<AdminCardComponent />} />
             <Route path="/admin/manage-public-classes" element={<ProtectedRoute element={<ManagePublicClass />} />} />
             <Route path="/admin/manage-private-classes" element={<ProtectedRoute element={<ManagePrivateClass />} />} />
             <Route path="/admin/manage-diet-plans" element={<ProtectedRoute element={<ManageDietPlan />} />} />
             <Route path="*" element={<Navigate to="/admin" />} />
-          </> )}
-          {role === 'postgres' && (
+          </> 
           <>
             <Route path="/user" element={<UserCardComponent />} />   
             <Route path="/user/public-class" element={<PublicClass />} />
@@ -59,7 +57,6 @@ function App() {
             <Route path="/user/diet-plan" element={<DietClass />} /> 
             <Route path="*" element={<Navigate to="/user" />} />
           </>
-          )}
           {role !== 'admin' && role !== 'user' && <Route path="*" element={<Navigate to="/design-block" />} />}
       </Routes>
     </Router>

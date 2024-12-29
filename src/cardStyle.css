@@ -36,17 +36,16 @@ body {
   
   .card-container {
     padding-top: 70px;
-    align-items: stretch;
     display: flex;
-    gap: 10px; /* Space between cards */
+    gap: 20px; /* Space between cards */
     justify-content: center; /* Center the cards */
     width: 100%; /* Adjust width of the container */
-    min-width: 800px;
     max-width: 1200px; /* Optional: limit max-width */
+    align-items: stretch;
   }
 
   .card {
-   box-sizing: border-box;
+    flex:1;
     border: none;
     border-radius: 10px;
     background-color: #FFFFFF; /* White for cards */
@@ -73,6 +72,7 @@ body {
   
   .card-body {
     padding: 20px;
+    flex-grow: 1;
   }
   
   .card-title {
@@ -126,7 +126,16 @@ body {
     padding-bottom: 10px;
  }
   
-  
-  
-  
-  
+ @media (max-width: 768px) {
+  .card-container {
+    flex-wrap: wrap; /* Stack cards on smaller screens */
+  }
+  .card {
+    flex: 1 1 100%; /* Each card takes full width on small screens */
+  }
+  .form-container {
+      width: 90%; /* Use 90% of the screen width on smaller devices */
+      margin: 20px; /* Add margin to ensure it doesn't touch the edges */
+      padding: 15px; /* Adjust padding for better spacing */
+}
+}
